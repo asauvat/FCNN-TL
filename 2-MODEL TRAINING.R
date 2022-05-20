@@ -74,7 +74,7 @@ val = val_ds %>%
 #Define model
 #--------------------------------------------------------------------#
               
-source('FUNCS/dice_metrics.R')
+source('dice_metrics.R')
 model = unet(input_shape = c(sF, sF, 1),num_classes = 2,filters = 32, num_layers = 3,dropout=0.5,output_activation='sigmoid')
 #
 model %>% compile(
