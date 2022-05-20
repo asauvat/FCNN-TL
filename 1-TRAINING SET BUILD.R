@@ -24,7 +24,7 @@ cn = apply(do.call('cbind',cn),1,unique);print(cn) #If all cn are the same
 names(cn)=cn
 Di = min(sapply(INF,function(x)x[[1]]$coreMetadata$sizeX)) #image dimension
 #-----
-PM.loc = '/media/Hcs-screen10-vi/D/Platemap/' #plate layout location
+PM.loc = '/media/Hcs-screen10-vi/TEAM_DATA/Platemap/' #plate layout location
 PM = lapply(PID,function(p)read.csv(paste0(PM.loc,SERVER,'/',p,'.csv'),stringsAsFactors = F)) #plate maps
 #-----
 rgp = pblapply(PID,function(p){
@@ -37,7 +37,7 @@ rgp = pblapply(PID,function(p){
 woi = lapply(PID,function(p){tapply(PM[[as.character(p)]]$WellID,PM[[as.character(p)]]$NAME,function(x)head(x,n=1))%>%sort()}) #Only one well/image per condition
 #----
 sF = 512L # Reduced image dimension (earns memory, decreases precision) 
-save.image('U2OS.RData') #Save training set plate info
+save.image('TRAIN.RData') #Save training set plate info
 
 #=================================================================================================================================================================#
 #CREATE PATCHS: RAW, NUC, CYTO

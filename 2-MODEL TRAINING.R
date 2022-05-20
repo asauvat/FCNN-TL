@@ -9,7 +9,7 @@ tf$config$run_functions_eagerly(TRUE)
 #=============================================================================#
 #CREATE GENERATORS
 #=============================================================================#
-load('U2OS.RData')
+load('TRAIN.RData')
 
 #--------------------------------------------------------------------------------
 im.dir = list.dirs('PATCHS',recursive=F,full.names=T)  
@@ -59,7 +59,6 @@ batch_size = 4
 #
 train = train_ds %>%
   dataset_map(function(x)preprocess(x,augment=T)) %>%
-  #dataset_shuffle(100) %>% #no shuffling with untiled images
   dataset_batch(batch_size)
 
 val = val_ds %>%
@@ -74,7 +73,7 @@ val = val_ds %>%
 #Define model
 #--------------------------------------------------------------------#
               
-source('dice_metrics.R')
+source('FUNCS/dice_metrics.R')
 model = unet(input_shape = c(sF, sF, 1),num_classes = 2,filters = 32, num_layers = 3,dropout=0.5,output_activation='sigmoid')
 #
 model %>% compile(
@@ -89,17 +88,17 @@ model %>% compile(
 
 learn = model %>% fit(train,validation_data=val,epochs=30,workers=12)
 #--
-model %>% save_model_hdf5("tl512d-ncm.h5")
+model %>% save_model_hdf5("H5/tl512d-ncm.h5")
 
 #--------------------------------------------------------------------#
 #Check model
 #-------------------------------------------------- ------------------#
 
-fp = naturalsort::naturalsort(filenames$raw)[1]
-im1 = readImage(fp)
-pred1 = model%>%predict(abind(abind(im1,along=3),along=0))
+fp = naturalsort::naturalsort(filenames$raw)[1] #get first image from dataset
+im1 = readImage(fp) #reads image
+pred1 = model%>%predict(abind(abind(im1,along=3),along=0)) #predict mask probability
 #
-display(pred[1,,,])
+display(pred1[1,,,])
 
 
 
