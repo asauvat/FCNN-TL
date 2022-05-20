@@ -41,7 +41,7 @@ save.image('PDATA.RData') #keep data stored
 #=================================================================================================================================================================#
 tr.dir = '/media/Hcs-screen10-vi/T/Allan/DEEPLEARNING/HDF5/' #Trained models location
 #
-source(paste0(tr.dir,'FUNCS/dice_metrics.R')) 
+source(paste0(tr.dir,'dice_metrics.R')) 
 modsem = unet::unet(input_shape = c(sF,sF,1),num_classes = 2,filters=32,num_layers = 3)%>%load_model_weights_hdf5(paste0(tr.dir,'tl512d-ncm.h5')) #model import
 #-------------------#
 dir.create('SEGS');sapply(1:(PIF$TID[2]),function(ti){dir.create(paste0('SEGS/T',ti))}) #Folder where masks are going to be exported
